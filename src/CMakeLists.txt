@@ -4,6 +4,7 @@ project (avrel)
 set (CMAKE_CXX_FLAGS "-std=c++0x -Wall -pedantic")
 
 set (SOURCES
+    CPUBase.cpp
     CPU.cpp
     ROM.cpp
 

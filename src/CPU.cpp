@@ -6,14 +6,8 @@
 namespace avrel
 {
     CPU::CPU(ROM &rom_, int frequency_)
-        : rom(rom_), frequency(frequency_), cycles(0)
+        : CPUBase(rom_, frequency_)
     {
-        reset();
-    }
-
-    void CPU::reset()
-    {
-        rom.jumpTo(0);
     }
 
     void CPU::run()
@@ -51,57 +45,33 @@ namespace avrel
             addr |= rom.readWord();
             addr *= 2;
             jmp(addr);
+            cycles+=3;
         
         } else if (MATCH(0,0,1,0, 0,1,X,X, X,X,X,X, X,X,X,X)) {
             // eor
             int d = EXTRACT(7, 5);
             int r = (EXTRACT(6, 1)<<4) | EXTRACT(12, 4);
             eor(r, d);
+            cycles++;
 
         } else if (MATCH(1,0,1,1, 1,X,X,X, X,X,X,X, X,X,X,X)) {
             // out
             int r = EXTRACT(7, 5);
             int A = (EXTRACT(5, 2)<<4) | EXTRACT(12, 4);
             out(r, A);
+            cycles++;
 
         } else if (MATCH(1,1,1,0, X,X,X,X, X,X,X,X, X,X,X,X)) {
             // ldi
             int d = EXTRACT(8, 4) + 16;
             int K = (EXTRACT(4, 4)<<4) | EXTRACT(12, 4);
             ldi(d, K);
+            cycles++;
 
         } else {
             printf("Unknown opcode: %04x\n", opcode);
             printf("Aborting.\n");
             exit(0);
-        }
-        
-        cycles++;
-    }
-
-    void CPU::jmp(int addr)
-    {
-        OPCODE_DEBUG("jmp %x\n", addr);
-        rom.jumpTo(addr);
-    }
-
-    void CPU::eor(int r, int d)
-    {
-        OPCODE_DEBUG("eor r%d, r%d\n", r, d);
-        R[d] = R[r] ^ R[d];
-        V = 0;
-        N = (R[d]>>7)&1;
-        S = V^N;
-        Z = (R[d] == 0);
-    }
-
-    void CPU::out(int r, int A)
-    {
-        OPCODE_DEBUG("out r%d, %x\n", r, A);
-    }
-
-    void CPU::ldi(int d, int K)
-    {
-        OPCODE_DEBUG("ldi r%d, %x\n", d, K);
+        }    
     }
 }
