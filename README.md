@@ -14,6 +14,7 @@ This repository contains:
     * `examples`: asm commented examples
     * `bins`: already built firmwares
 * `src`: the emulator source code
+* `tools`: scripts and util tools
 
 ## Building and using
 
