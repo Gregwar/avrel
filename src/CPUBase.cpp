@@ -2,7 +2,7 @@
 #include "timing/Chrono.h"
 #include "CPUBase.h"
 #include "opcode.h"
-#include "registers.h"
+#include "util.h"
 
 namespace avrel
 {
@@ -17,14 +17,14 @@ namespace avrel
         rom.jumpTo(0);
         I = T = H = S = V = N = Z = C = false;
         unsigned int i;
-        for (i=0; i<sizeof(registers); i++) {
+        for (i=0; i<REGISTERS_SIZE; i++) {
             registers[i] = 0;
         }
     }
 
-    int CPUBase::readRegister(unsigned int reg)
+    int CPUBase::readData(unsigned int addr)
     {
-        switch (reg) {
+        switch (addr) {
             case SREG:
                 return getSreg();
                 break;
@@ -36,16 +36,17 @@ namespace avrel
                 break;
         }
 
-        if (reg < sizeof(registers)) {
-            return registers[reg];
+        if (addr < REGISTERS_SIZE) {
+            return registers[addr];
+        } else {
+            addr -= REGISTERS_SIZE;
+            return ram.readByte(addr);
         }
-
-        return 0;
     }
             
-    void CPUBase::writeRegister(unsigned int reg, int value)
+    void CPUBase::writeData(unsigned int addr, int value)
     {
-        switch (reg) {
+        switch (addr) {
             case SREG:
                 setSreg(value);
                 break;
@@ -57,12 +58,14 @@ namespace avrel
                 break;
         }
 
-        if (reg < sizeof(registers)) {
-            registers[reg] = value;
-        }
-
-        if (reg == PORTB) {
-            printf("PORTB: %02x\n", value);
+        if (addr < sizeof(registers)) {
+            registers[addr] = value;
+            if (addr == PORTB) {
+                printf("PORTB: %02x\n", value);
+            }
+        } else {
+            addr -= REGISTERS_SIZE;
+            ram.writeByte(addr, value);
         }
     }
 
@@ -103,6 +106,31 @@ namespace avrel
         ram.writeWord(SP, word);
         SP-=2;
     }
+            
+    void CPUBase::setFlags(int A, int B, int R)
+    {
+        int A7 = GETBIT(A,7);
+        int B7 = GETBIT(B,7);
+        int R7 = GETBIT(R,7);
+        int A3 = GETBIT(A,3);
+        int B3 = GETBIT(B,3);
+        int R3 = GETBIT(R,3);
+
+        H = ((!A3) && B3)
+            || (B3 && R3)
+            || (R3 && (!A3));
+
+        V = (A7 && (!B7) && (!R7))
+            || ((!A7) && B7 && R7);
+
+        C = ((!A7) && (B7))
+            || (B7 && R7)
+            || (R7 && (!A7));
+
+        Z = (R==0);
+        N = GETBIT(A,7);
+        S = N ^ V;
+    }
 
     // Opcodes
 
@@ -132,19 +160,19 @@ namespace avrel
     void CPUBase::out(int r, int A)
     {
         OPCODE_DEBUG("out r%d, %x\n", r, A);
-        writeRegister(A, R[r]);
+        writeData(A, R[r]);
     }
 
     void CPUBase::sts(int r, int A)
     {
         OPCODE_DEBUG("sts r%d, %x\n", r, A);
-        writeRegister(A, R[r]);
+        writeData(A, R[r]);
     }
 
     void CPUBase::in(int r, int A)
     {
         OPCODE_DEBUG("in r%d, %x\n", r, A);
-        R[r] = readRegister(A);
+        R[r] = readData(A);
     }
 
     void CPUBase::ldi(int d, int K)
@@ -168,38 +196,33 @@ namespace avrel
     void CPUBase::sbi(int A, int b)
     {
         OPCODE_DEBUG("sbi %x, %d\n", A, b);
-        int value = readRegister(A);
+        int value = readData(A);
         value |= (1<<b);
-        writeRegister(A, value);
+        writeData(A, value);
     }
 
     void CPUBase::cbi(int A, int b)
     {
         OPCODE_DEBUG("cbi %x, %d\n", A, b);
-        int value = readRegister(A);
+        int value = readData(A);
         value &= ~(1<<b);
-        writeRegister(A, value);
+        writeData(A, value);
     }
             
     void CPUBase::subi(int d, int K)
     {
         OPCODE_DEBUG("subi r%d, %x\n", d, K);
-        C = (K > R[d]);
+        int old = R[d];
         R[d] -= K;
-        Z = (R[d] == 0);
-        N = (R[d]>>7)&1;
-        // XXX: H, V et S non maintenus
+        setFlags(old, K, R[d]);
     }
             
     void CPUBase::sbci(int d, int K)
     {
         OPCODE_DEBUG("sbci r%d, %x\n", d, K);
-        K += (C ? 1 : 0);
-        C = (K > R[d]);
-        R[d] -= K;
-        Z = (R[d] == 0);
-        N = (R[d]>>7)&1;
-        // XXX: H, V et S non maintenus
+        int old = R[d];
+        R[d] -= K + (C ? 1 : 0);
+        setFlags(old, K, R[d]);
     }
             
     bool CPUBase::brne(int k)
@@ -223,6 +246,12 @@ namespace avrel
     void CPUBase::nop()
     {
         OPCODE_DEBUG("nop\n");
+    }
+
+    void CPUBase::cpi(int d, int K)
+    {
+        OPCODE_DEBUG("cpi r%d, %d\n", d, K);
+        setFlags(R[d], K, R[d]);
     }
 
     // X Y & Z

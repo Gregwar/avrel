@@ -3,6 +3,7 @@
 
 #include "ROM.h"
 #include "RAM.h"
+#include "registers.h"
 
 namespace avrel
 {
@@ -15,8 +16,8 @@ namespace avrel
             void reset();
 
             // Write a value to a register
-            void writeRegister(unsigned int reg, int value);
-            int readRegister(unsigned int reg);
+            void writeData(unsigned int reg, int value);
+            int readData(unsigned int reg);
             void setSreg(int value);
             int getSreg();
 
@@ -31,6 +32,7 @@ namespace avrel
             // Utils
             void pushByte(int byte);
             void pushWord(int value);
+            void setFlags(int A, int B, int R);
             
             // Opcodes
             void jmp(int addr);
@@ -49,6 +51,7 @@ namespace avrel
             bool brne(int k);
             void nop();
             void rjmp(int k);
+            void cpi(int d, int K);
 
         protected:
             ROM &rom;
@@ -58,7 +61,7 @@ namespace avrel
 
             // Registers
             uint8_t R[32];
-            uint8_t registers[0xff];
+            uint8_t registers[REGISTERS_SIZE];
 
             // Stack pointer;
             uint16_t SP;

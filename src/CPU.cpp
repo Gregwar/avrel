@@ -3,6 +3,7 @@
 #include "timing/sleep.h"
 #include "CPU.h"
 #include "opcode.h"
+#include "util.h"
 
 namespace avrel
 {
@@ -148,6 +149,13 @@ namespace avrel
         } else if (MATCH(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0)) {
             // nop
             nop();
+            cycles++;
+
+        } else if (MATCH(0,0,1,1, X,X,X,X, X,X,X,X, X,X,X,X)) {
+            // cpi
+            int K = (EXTRACT(4, 4)<<4) | EXTRACT(12, 4);
+            int d = EXTRACT(8, 4) + 16;
+            cpi(d, K);
             cycles++;
 
         } else {

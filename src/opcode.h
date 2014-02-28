@@ -30,10 +30,4 @@
 #define EXTRACT_BITS(opcode, from, length) \
         ((opcode>>(16-from-length))&((1<<length)-1))
 
-// Sign an expression
-#define VALUE_SIGN(value, length) \
-    ((value < (1<<(length-1))) ? \
-    (value) \
-    : (value-(1<<length)))
-
 #endif
