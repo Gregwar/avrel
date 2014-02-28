@@ -1,10 +1,10 @@
-#ifndef _EMULAVR_ROM_H
-#define _EMULAVR_ROM_H
+#ifndef _AVREL_ROM_H
+#define _AVREL_ROM_H
 
 #include <stdint.h>
 #include <string>
 
-namespace EmulAVR
+namespace avrel
 {
     class ROM
     {

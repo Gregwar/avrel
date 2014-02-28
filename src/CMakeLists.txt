@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
-project (EmulAVR)
+project (avrel)
 
 set (SOURCES
     ROM.cpp
@@ -8,4 +8,4 @@ set (SOURCES
     main.cpp
     )
 
-add_executable (EmulAVR ${SOURCES})
+add_executable (avrel ${SOURCES})

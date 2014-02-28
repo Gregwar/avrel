@@ -7,7 +7,7 @@
 using std::string;
 using std::ifstream;
 
-namespace EmulAVR
+namespace avrel
 {
     ROM::ROM(string romFile)
         : position(0)

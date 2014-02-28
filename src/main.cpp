@@ -6,11 +6,11 @@
 #include "ROM.h"
 
 using namespace std;
-using namespace EmulAVR;
+using namespace avrel;
 
 void usage()
 {
-    cerr << "Usage: ./EmulAVR <ROM file>" << endl;
+    cerr << "Usage: ./avrel <ROM file>" << endl;
 }
 
 int main(int argc, char *argv[])
