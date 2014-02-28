@@ -107,7 +107,7 @@ namespace avrel
         SP-=2;
     }
             
-    void CPUBase::setFlags(int A, int B, int R)
+    void CPUBase::setFlags(int A, int B, int R, bool carry)
     {
         int A7 = GETBIT(A,7);
         int B7 = GETBIT(B,7);
@@ -127,7 +127,7 @@ namespace avrel
             || (B7 && R7)
             || (R7 && (!A7));
 
-        Z = (R==0);
+        Z = (R==0) && (carry ? Z : true);
         N = GETBIT(A,7);
         S = N ^ V;
     }
@@ -252,6 +252,12 @@ namespace avrel
     {
         OPCODE_DEBUG("cpi r%d, %d\n", d, K);
         setFlags(R[d], K, R[d]);
+    }
+            
+    void CPUBase::cpc(int d, int r)
+    {
+        OPCODE_DEBUG("cpc r%d, r%d\n", d, r);
+        setFlags(R[d], R[r], R[d]);
     }
 
     // X Y & Z

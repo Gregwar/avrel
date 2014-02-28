@@ -158,6 +158,13 @@ namespace avrel
             cpi(d, K);
             cycles++;
 
+        } else if (MATCH(0,0,0,0, 0,1,X,X, X,X,X,X, X,X,X,X)) {
+            // cpc
+            int d = EXTRACT(7, 5);
+            int r = (EXTRACT(6, 1)<<4) | EXTRACT(12, 4);
+            cpc(d, r);
+            cycles++;
+
         } else {
             printf("Unknown opcode: %04x\n", opcode);
             printf("Aborting.\n");

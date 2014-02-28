@@ -32,7 +32,7 @@ namespace avrel
             // Utils
             void pushByte(int byte);
             void pushWord(int value);
-            void setFlags(int A, int B, int R);
+            void setFlags(int A, int B, int R, bool carry = false);
             
             // Opcodes
             void jmp(int addr);
@@ -52,6 +52,7 @@ namespace avrel
             void nop();
             void rjmp(int k);
             void cpi(int d, int K);
+            void cpc(int d, int r);
 
         protected:
             ROM &rom;
