@@ -4,6 +4,7 @@
 #include <string>
 #include "args/CommandArgs.h"
 #include "ROM.h"
+#include "CPU.h"
 
 using namespace std;
 using namespace avrel;
@@ -25,7 +26,8 @@ int main(int argc, char *argv[])
         string romFile = parts[0];
         cout << "Loading ROM " << romFile << "..." << endl;
         ROM rom(romFile);
+        CPU cpu(rom, 16000000);
 
-        printf("%04x\n", rom.readUWord());
+        cpu.run();
     }
 }

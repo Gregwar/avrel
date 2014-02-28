@@ -12,12 +12,16 @@ namespace avrel
             ROM(std::string file);
 
             // Read an unsigned short
-            uint16_t readUWord();
+            uint16_t readWord();
 
             // Read chars
             uint8_t readChar();
 
+            // Jump cursor to position
+            void jumpTo(int position);
+
         protected:
+            int size;
             int position;
             std::string data;
     };

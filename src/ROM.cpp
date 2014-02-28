@@ -16,15 +16,25 @@ namespace avrel
         data = string((std::istreambuf_iterator<char>(ifs)),
             std::istreambuf_iterator<char>());
         ifs.close();
+        size = data.size();
     }
 
-    uint16_t ROM::readUWord()
+    void ROM::jumpTo(int position_)
+    {
+        position = position_;
+    }
+
+    uint16_t ROM::readWord()
     {
         return (readChar())|(readChar()<<8);
     }
 
     uint8_t ROM::readChar()
     {
-        return data[position++];
+        if (position < size) {
+            return data[position++];
+        } else {
+            return 0x00;
+        }
     }
 }
