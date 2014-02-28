@@ -15,7 +15,8 @@ namespace avrel
             void reset();
 
             // Write a value to a register
-            void writeRegister(int reg, int value);
+            void writeRegister(unsigned int reg, int value);
+            int readRegister(unsigned int reg);
             void setSreg(int value);
             int getSreg();
 
@@ -34,9 +35,20 @@ namespace avrel
             // Opcodes
             void jmp(int addr);
             void call(int addr);
+            void sts(int r, int A);
             void eor(int r, int d);
             void out(int r, int A);
+            void in(int r, int A);
             void ldi(int d, int K);
+            void cli();
+            void sei();
+            void sbi(int A, int b);
+            void cbi(int A, int b);
+            void subi(int d, int K);
+            void sbci(int d, int K);
+            bool brne(int k);
+            void nop();
+            void rjmp(int k);
 
         protected:
             ROM &rom;
@@ -45,7 +57,8 @@ namespace avrel
             int cycles;
 
             // Registers
-            uint16_t R[32];
+            uint8_t R[32];
+            uint8_t registers[0xff];
 
             // Stack pointer;
             uint16_t SP;

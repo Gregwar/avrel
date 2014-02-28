@@ -23,6 +23,11 @@ namespace avrel
     {
         position = position_;
     }
+            
+    void ROM::jumpRelative(int position_)
+    {
+        position += position_;
+    }
 
     uint16_t ROM::readWord()
     {

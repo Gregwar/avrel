@@ -8,4 +8,8 @@
 #define SPH     0x3e
 #define SPL     0x3d
 
+// GPIO
+#define PORTB   0x05
+#define DDRB    0x04
+
 #endif

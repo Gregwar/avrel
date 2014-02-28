@@ -2,10 +2,10 @@
 #define _AVREL_OPCODE_H
 
 // Disable opcode debugging
-// #define OPCODE_DEBUG(...) 
+#define OPCODE_DEBUG(...) 
 
 // Enable opcode debugging
-#define OPCODE_DEBUG(...) printf(__VA_ARGS__)
+// #define OPCODE_DEBUG(...) printf("%04x ", rom.getPosition()); printf(__VA_ARGS__)
 
 // Checks that an opcode match the given pattern
 #define OPCODE_MATCH(opcode,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15) \
@@ -29,5 +29,11 @@
 // Extract the bits from nth with length l
 #define EXTRACT_BITS(opcode, from, length) \
         ((opcode>>(16-from-length))&((1<<length)-1))
+
+// Sign an expression
+#define VALUE_SIGN(value, length) \
+    ((value < (1<<(length-1))) ? \
+    (value) \
+    : (value-(1<<length)))
 
 #endif
