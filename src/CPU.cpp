@@ -1,5 +1,6 @@
 #include <iostream>
 #include "timing/Chrono.h"
+#include "timing/sleep.h"
 #include "CPU.h"
 #include "opcode.h"
 
@@ -26,6 +27,9 @@ namespace avrel
             }
 
             cycles -= toDo;
+            if (toDo < 10000) {
+                ms_sleep(1);
+            }
         }
     }
 
@@ -38,7 +42,7 @@ namespace avrel
 #define MATCH(b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15) \
         OPCODE_MATCH(opcode,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15)
 
-               if (MATCH(1,0,0,1, 0,1,0,X, X,X,X,X, 1,1,0,X)) {
+        if (MATCH(1,0,0,1, 0,1,0,X, X,X,X,X, 1,1,0,X)) {
             // jmp
             int addr = EXTRACT(7, 5)<<17;
             addr |= EXTRACT_BITS(opcode, 15, 1)<<16;

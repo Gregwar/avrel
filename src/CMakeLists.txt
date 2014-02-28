@@ -10,6 +10,7 @@ set (SOURCES
     RAM.cpp
 
     timing/Chrono.cpp
+    timing/sleep.cpp
     args/CommandArgs.cpp
     main.cpp
     )
