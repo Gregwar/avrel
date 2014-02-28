@@ -58,9 +58,31 @@ namespace avrel
             ((C ? 1 : 0)<<0);
     }
 
+    // Utils
+
+    void CPUBase::pushByte(int byte)
+    {
+        ram.writeByte(SP--, byte);
+    }
+    
+    void CPUBase::pushWord(int word)
+    {
+        ram.writeWord(SP, word);
+        SP-=2;
+    }
+
+    // Opcodes
+
     void CPUBase::jmp(int addr)
     {
         OPCODE_DEBUG("jmp %x\n", addr);
+        rom.jumpTo(addr);
+    }
+
+    void CPUBase::call(int addr)
+    {
+        OPCODE_DEBUG("call %x\n", addr);
+        pushWord(rom.getPosition());
         rom.jumpTo(addr);
     }
 

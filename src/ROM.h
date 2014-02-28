@@ -20,6 +20,8 @@ namespace avrel
             // Jump cursor to position
             void jumpTo(int position);
 
+            int getPosition();
+
         protected:
             int size;
             int position;

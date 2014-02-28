@@ -26,9 +26,14 @@ namespace avrel
             int getX();
             int getY();
             int getZ();
+
+            // Utils
+            void pushByte(int byte);
+            void pushWord(int value);
             
             // Opcodes
             void jmp(int addr);
+            void call(int addr);
             void eor(int r, int d);
             void out(int r, int A);
             void ldi(int d, int K);

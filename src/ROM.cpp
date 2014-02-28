@@ -40,4 +40,9 @@ namespace avrel
             return 0x00;
         }
     }
+
+    int ROM::getPosition()
+    {
+        return position;
+    }
 }
