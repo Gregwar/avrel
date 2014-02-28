@@ -26,7 +26,10 @@ namespace avrel
 
     uint16_t ROM::readWord()
     {
-        return (readChar())|(readChar()<<8);
+        uint16_t L = readChar();
+        uint16_t H = readChar();
+
+        return (H<<8)|L;
     }
 
     uint8_t ROM::readChar()

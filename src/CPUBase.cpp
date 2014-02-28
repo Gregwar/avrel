@@ -6,8 +6,8 @@
 
 namespace avrel
 {
-    CPUBase::CPUBase(ROM &rom_, int frequency_)
-        : rom(rom_), frequency(frequency_), cycles(0)
+    CPUBase::CPUBase(ROM &rom_, RAM &ram_, int frequency_)
+        : rom(rom_), ram(ram_), frequency(frequency_), cycles(0)
     {
         reset();
     }

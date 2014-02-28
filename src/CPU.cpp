@@ -5,8 +5,8 @@
 
 namespace avrel
 {
-    CPU::CPU(ROM &rom_, int frequency_)
-        : CPUBase(rom_, frequency_)
+    CPU::CPU(ROM &rom_, RAM &ram_, int frequency_)
+        : CPUBase(rom_, ram_, frequency_)
     {
     }
 

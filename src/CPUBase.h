@@ -2,13 +2,14 @@
 #define _AVREL_CPU_BASE_H
 
 #include "ROM.h"
+#include "RAM.h"
 
 namespace avrel
 {
     class CPUBase
     {
         public:
-            CPUBase(ROM &rom, int frequency);
+            CPUBase(ROM &rom, RAM &ram, int frequency);
 
             // CPUBase reset
             void reset();
@@ -34,6 +35,7 @@ namespace avrel
 
         protected:
             ROM &rom;
+            RAM &ram;
             int frequency;
             int cycles;
 

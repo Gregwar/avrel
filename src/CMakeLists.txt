@@ -7,6 +7,7 @@ set (SOURCES
     CPUBase.cpp
     CPU.cpp
     ROM.cpp
+    RAM.cpp
 
     timing/Chrono.cpp
     args/CommandArgs.cpp
