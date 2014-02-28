@@ -8,7 +8,7 @@
 #define OPCODE_DEBUG(...) printf(__VA_ARGS__)
 
 // Checks that an opcode match the given pattern
-#define OPCODE_MATCH(opcode, b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15) \
+#define OPCODE_MATCH(opcode,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15) \
     ((b0==-1) || (((opcode>>15)&0x1)==b0)) && \
     ((b1==-1) || (((opcode>>14)&0x1)==b1)) && \
     ((b2==-1) || (((opcode>>13)&0x1)==b2)) && \

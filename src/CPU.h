@@ -22,6 +22,8 @@ namespace avrel
             // Opcodes
             void jmp(int addr);
             void eor(int r, int d);
+            void out(int r, int A);
+            void ldi(int d, int K);
 
         protected:
             ROM &rom;
