@@ -60,9 +60,6 @@ namespace avrel
 
         if (addr < sizeof(registers)) {
             registers[addr] = value;
-            if (addr == PORTB) {
-                printf("PORTB: %02x\n", value);
-            }
         } else {
             addr -= REGISTERS_SIZE;
             ram.writeByte(addr, value);
@@ -258,6 +255,11 @@ namespace avrel
     {
         OPCODE_DEBUG("cpc r%d, r%d\n", d, r);
         setFlags(R[d], R[r], R[d]);
+    }
+
+    void CPUBase::xbreak()
+    {
+        printf("* PORTB: %02X\n", registers[PORTB]);
     }
 
     // X Y & Z

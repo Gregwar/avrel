@@ -165,6 +165,11 @@ namespace avrel
             cpc(d, r);
             cycles++;
 
+        } else if (MATCH(1,0,0,1, 0,1,0,1, 1,0,0,1, 1,0,0,0)) {
+            // break
+            xbreak();
+            cycles++;
+
         } else {
             printf("Unknown opcode: %04x\n", opcode);
             printf("Aborting.\n");

@@ -54,6 +54,8 @@ namespace avrel
             void cpi(int d, int K);
             void cpc(int d, int r);
 
+            void xbreak();
+
         protected:
             ROM &rom;
             RAM &ram;

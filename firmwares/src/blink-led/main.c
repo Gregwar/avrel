@@ -5,6 +5,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <avr/sleep.h>
+#include <dbg/dbg.h>
 
 // BLinks the following led
 #define LED_DDR    DDRB
@@ -22,10 +23,12 @@ int main (void)
     while (1) {
         // Led is on
         LED_PORT |= _BV(LED_PIN);
+        dbg();
         _delay_ms(1000);
 
         // Led is off
         LED_PORT &= ~_BV(LED_PIN);
+        dbg();
         _delay_ms(1000);
     }
 }
