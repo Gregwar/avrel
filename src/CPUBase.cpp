@@ -128,7 +128,7 @@ namespace avrel
             || (R7 && (!A7));
 
         Z = (R==0) && (carry ? Z : true);
-        N = GETBIT(A,7);
+        N = GETBIT(R,7);
         S = N ^ V;
     }
 
