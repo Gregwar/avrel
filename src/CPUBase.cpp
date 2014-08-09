@@ -12,9 +12,19 @@ namespace avrel
         reset();
     }
 
+    void CPUBase::jumpTo(int addr)
+    {
+        PC = addr;
+    }
+
+    void CPUBase::jumpRelative(int addr)
+    {
+        PC += addr;
+    }
+
     void CPUBase::reset()
     {
-        rom.jumpTo(0);
+        jumpTo(0);
         I = T = H = S = V = N = Z = C = false;
         unsigned int i;
         for (i=0; i<REGISTERS_SIZE; i++) {
@@ -134,14 +144,14 @@ namespace avrel
     void CPUBase::jmp(int addr)
     {
         OPCODE_DEBUG("jmp %x\n", addr);
-        rom.jumpTo(addr);
+        jumpTo(addr);
     }
 
     void CPUBase::call(int addr)
     {
         OPCODE_DEBUG("call %x\n", addr);
-        pushWord(rom.getPosition());
-        rom.jumpTo(addr);
+        pushWord(PC);
+        jumpTo(addr);
     }
 
     void CPUBase::eor(int r, int d)
@@ -227,7 +237,7 @@ namespace avrel
         OPCODE_DEBUG("brne %d\n", k);
         
         if (!Z) {
-            rom.jumpRelative(k);
+            jumpRelative(k);
             return true;
         } else {
             return false;
@@ -237,7 +247,7 @@ namespace avrel
     void CPUBase::rjmp(int k)
     {
         OPCODE_DEBUG("rjmp %d\n", k);
-        rom.jumpRelative(k);
+        jumpRelative(k);
     }
 
     void CPUBase::nop()

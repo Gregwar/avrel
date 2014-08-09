@@ -25,6 +25,8 @@ namespace avrel
 
             int getPosition();
 
+            int getSize();
+
         protected:
             int size;
             int position;

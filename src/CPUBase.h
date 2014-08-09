@@ -54,6 +54,9 @@ namespace avrel
             void cpi(int d, int K);
             void cpc(int d, int r);
 
+            void jumpTo(int addr);
+            void jumpRelative(int addr);
+
             void xbreak();
 
         protected:
@@ -71,6 +74,9 @@ namespace avrel
 
             // S_reg bits
             bool I,T,H,S,V,N,Z,C;
+
+            // Addr
+            int PC;
     };
 }
 

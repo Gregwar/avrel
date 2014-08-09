@@ -37,6 +37,11 @@ namespace avrel
         return (H<<8)|L;
     }
 
+    int ROM::getSize()
+    {
+        return size;
+    }
+
     uint8_t ROM::readChar()
     {
         if (position < size) {
