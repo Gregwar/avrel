@@ -5,7 +5,7 @@
 #define OPCODE_DEBUG(...) 
 
 // Enable opcode debugging
-// #define OPCODE_DEBUG(...) printf("%04x ", rom.getPosition()); printf(__VA_ARGS__)
+// #define OPCODE_DEBUG(...) printf("%04x ", PC-2); printf(__VA_ARGS__)
 
 // Checks that an opcode match the given pattern
 #define OPCODE_MATCH(opcode,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15) \

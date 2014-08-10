@@ -270,6 +270,8 @@ namespace avrel
     void CPUBase::xbreak()
     {
         printf("* PORTB: %02X\n", registers[PORTB]);
+        fflush(stdout);
+
     }
 
     // X Y & Z

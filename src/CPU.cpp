@@ -10,15 +10,16 @@ namespace avrel
     CPU::CPU(ROM &rom_, RAM &ram_, int frequency_)
         : CPUBase(rom_, ram_, frequency_)
     {
-        operations = new std::function<void ()>[rom.getSize()];
+        operations = new std::function<void ()>[rom.getSize()+2];
         cache();
     }
 
     void CPU::cache()
     {
-        rom.jumpTo(0);
-        for (int i=0; i<rom.getSize()/2; i++) {
-            operations[i] = processOpcode();
+        for (rom.jumpTo(0); rom.getPosition()<rom.getSize();) {
+            int pos = rom.getPosition();
+            fflush(stdout);
+            operations[pos] = processOpcode();
         }
     }
 
@@ -36,7 +37,7 @@ namespace avrel
             while (cycles < toDo) {
                 int i = PC;
                 PC+=2;
-                operations[i/2]();
+                operations[i]();
             }
 
             cycles -= toDo;
@@ -63,6 +64,7 @@ namespace avrel
             addr *= 2;
 
             return [this,addr]() {
+                this->PC+=2;
                 this->jmp(addr);
                 this->cycles+=3;
             };
@@ -75,6 +77,7 @@ namespace avrel
             addr *= 2;
 
             return [this,addr]() {
+                this->PC+=2;
                 this->call(addr);
                 this->cycles+=4;
             };
@@ -85,6 +88,7 @@ namespace avrel
             int addr = rom.readWord();
 
             return [this,d,addr]() {
+                this->PC+=2;
                 this->sts(d, addr);
                 this->cycles+=1;
             };
@@ -243,6 +247,6 @@ namespace avrel
                 printf("Aborting.\n");
                 exit(0);
             };
-        }    
+        } 
     }
 }
